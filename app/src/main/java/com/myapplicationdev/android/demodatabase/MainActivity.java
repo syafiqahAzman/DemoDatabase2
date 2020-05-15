@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
 
     ListView lv;
     TaskAdapter ta;
-    ArrayList<Task> task;
+    ArrayList<Task> al;
     Button btnInsert, btnGetTasks;
     TextView tv;
 
@@ -56,18 +56,22 @@ public class MainActivity extends AppCompatActivity {
                 db.close();
 
                 String txt = "";
-                for(int i = 1; i < data.size(); i++){
+                for(int i = 0; i < data.size(); i++){
                     Log.d("Database Content", i + ". " + data.get(i));
                     txt += i + ". " + data.get(i) + "\n";
                 }
 
                 tv.setText(txt);
 
+                DBHelper db2 = new DBHelper(MainActivity.this);
+                al = db2.getTasks();
+                db2.close();
 
+                ta = new TaskAdapter(MainActivity.this, R.layout.row, al);
+                lv.setAdapter(ta);
             }
         });
 
-        ta = new TaskAdapter(this, R.layout.row, task);
-        lv.setAdapter(ta);
+
     }
 }
